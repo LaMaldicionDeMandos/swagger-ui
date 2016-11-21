@@ -115,6 +115,10 @@ function _copy() {
     .src(['./src/main/html/**/*'])
     .pipe(gulp.dest('./dist'))
     .on('error', log);
+  gulp
+    .src(['./src/main/doc/**/*'])
+    .pipe(gulp.dest('./dist'))
+    .on('error', log);
 }
 gulp.task('dev-copy', ['dev-less', 'copy-local-specs'], _copy);
 

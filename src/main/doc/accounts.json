@@ -1,0 +1,855 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "pharmared api Account",
+        "description": "Api relacionada con el manejo de usuarios y entidades",
+        "contact": {
+            "name": "Pharmared API team",
+            "email": "pasutmarcelo@gmail.com"
+        }
+    },
+    "host": "farmared.com.ar",
+    "basePath": "/api/accounts",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/register/pharmacy": {
+            "post": {
+                "description": "Crea una farmacia con su respectivo usuario",
+                "operationId": "addPharmacy",
+                "parameters": [
+                    {
+                        "name": "form",
+                        "in": "body",
+                        "description": "formulario de farmacia",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Farmacia y usuario",
+                        "schema": {
+                            "$ref": "#/definitions/user_and_pharmacy"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacy_error"
+                        }
+                    }
+                }
+            }
+        },
+        "/register/pharmacist": {
+            "post": {
+                "description": "Crea un farmaceutico con su respectivo usuario",
+                "operationId": "addPharmacist",
+                "parameters": [
+                    {
+                        "name": "form",
+                        "in": "body",
+                        "description": "formulario de farmaceutico",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pharmacist_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Farmaceutico y usuario",
+                        "schema": {
+                            "$ref": "#/definitions/user_and_pharmacist"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/pharmacist_error"
+                        }
+                    }
+                }
+            }
+        },
+        "/register/laboratory": {
+            "post": {
+                "description": "Crea un laboratorio con su respectivo usuario",
+                "operationId": "addLaboratory",
+                "parameters": [
+                    {
+                        "name": "form",
+                        "in": "body",
+                        "description": "formulario de laboratorio",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Laboratorio y usuario",
+                        "schema": {
+                            "$ref": "#/definitions/user_and_laboratory"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/laboratory_error"
+                        }
+                    }
+                }
+            }
+        },
+        "/register/drugstore": {
+            "post": {
+                "description": "Crea una drogueria con su respectivo usuario",
+                "operationId": "addDrugstore",
+                "parameters": [
+                    {
+                        "name": "form",
+                        "in": "body",
+                        "description": "formulario de drogueria",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Drogueria y usuario",
+                        "schema": {
+                            "$ref": "#/definitions/user_and_drugstore"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/drugstore_error"
+                        }
+                    }
+                }
+            }
+        },
+        "/confirm/{id}": {
+            "get": {
+                "description": "LLamada para confirmar el email",
+                "operationId": "confirm",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "ID del usuario, esta en la url del email",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Confirmacion ok, redireccionando a la app"
+                    },
+                    "401": {
+                        "description": "unauthorized, el id de usuario no es valido"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "Obtiene el usuario desde el accessToken",
+                "operationId": "getUserByAccessToken",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "description": "Access Token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok, Usuario",
+                        "schema": {
+                            "$ref": "#/definitions/user_min"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, el Access Token es invalido"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "description": "Login",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "login_form",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/login_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "accessToken",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/retieve/{email}": {
+            "post": {
+                "description": "Recuperar passeord",
+                "operationId": "retrievePassword",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "email",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "El usuario no existe"
+                    }
+                }
+            }
+        },
+        "/user/internal/{id}/entity/type": {
+            "get": {
+                "description": "Obtiene el tipo de la entidad asiciada a un usuario",
+                "operationId": "entityType",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "Internal",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de entidad",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Error desconocido"
+                    },
+                    "401": {
+                        "description": "unauthorized, el header Internal es invalido o no esta presente"
+                    }
+                }
+            }
+        },
+        "/user/profile/me": {
+            "get": {
+                "description": "Perfil del usuario actual",
+                "operationId": "getMyProfile",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Perfil del usuario actual",
+                        "schema": {
+                            "$ref": "#/definitions/profile"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "description": "Cambia el perfil del usuario actual",
+                "operationId": "updateMyProfile",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "profile",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/profile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Nuevo perfil del usuario actual",
+                        "schema": {
+                            "$ref": "#/definitions/profile"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/user/accessToken/{accessToken}": {
+            "delete": {
+                "description": "Revoca el accessToken",
+                "operationId": "revokeAccessToken",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok, accessToken invalidado"
+                    }
+                }
+            }
+        },
+        "/user/password": {
+            "post": {
+                "description": "Cambio de password",
+                "operationId": "changePassword",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "form",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/change_password_form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Cambio ok"
+                    },
+                    "400": {
+                        "description": "algun error de validacion",
+                        "schema": {
+                            "$ref": "#/definitions/change_password_error"
+                        }
+                    }
+                }
+            }
+        },
+        "/entity/me": {
+            "get": {
+                "description": "Entidad relacionada con el usuario actual",
+                "operationId": "getMyEntity",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Entidad relacionada al usuario actual",
+                        "schema": {
+                            "$ref": "#/definitions/entity"
+                        }
+                    },
+                    "401": {
+                        "description": "Access token invalido"
+                    }
+                }
+            },
+            "put": {
+                "description": "Cambia la entidad relacionada con el usuario actual",
+                "operationId": "updateMyEntity",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "accessToken",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "entity",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna la entidad modificada",
+                        "schema": {
+                            "$ref": "#/definitions/entity"
+                        }
+                    },
+                    "400": {
+                        "description": "Error desconocido al intentar modificar la entidad"
+                    },
+                    "401": {
+                        "description": "Error de autorizacion"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "change_password_form": {
+            "type": "object",
+            "required": [
+                "old",
+                "new"
+            ],
+            "properties": {
+                "old": {
+                    "type": "string"
+                },
+                "new": {
+                    "type": "string"
+                }
+            }
+        },
+        "login_form": {
+            "type": "object",
+            "required": [
+                "username",
+                "password"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "profile": {
+            "type": "object",
+            "required": [
+                "first_name",
+                "last_name"
+            ],
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "picture": {
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "birthdate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "martial_status": {
+                    "type": "string"
+                },
+                "twitter": {
+                    "type": "string"
+                },
+                "skype": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "phrase": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/address"
+                }
+            }
+        },
+        "address": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "__v": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "unique": {
+                    "type": "boolean"
+                },
+                "isParent": {
+                    "type": "boolean"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phantasy_name": {
+                    "type": "string"
+                },
+                "cuit": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/address"
+                }
+            }
+        },
+        "user": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "__v": {
+                    "type": "number"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/profile"
+                },
+                "entity": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "user_min": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "__v": {
+                    "type": "number"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/profile"
+                },
+                "entity": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "entity_form": {
+            "type": "object",
+            "required": [
+                "name",
+                "phantasy_name",
+                "cuit",
+                "email",
+                "street",
+                "number",
+                "city",
+                "province",
+                "profile"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phantasy_name": {
+                    "type": "string"
+                },
+                "cuit": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "number"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/profile"
+                }
+            }
+        },
+        "user_and_pharmacy": {
+            "type": "object",
+            "properties": {
+                "pharmacy": {
+                    "$ref": "#/definitions/entity"
+                },
+                "user": {
+                    "$ref": "#/definitions/user"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacy_error": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "exist_user",
+                    "exist_pharmacy",
+                    "User is Invalid",
+                    "Pharmacy is Invalid"
+                ]
+            }
+        },
+        "pharmacist_form": {
+            "type": "object",
+            "required": [
+                "enrollment",
+                "cuit",
+                "email",
+                "profile"
+            ],
+            "properties": {
+                "enrollment": {
+                    "type": "string"
+                },
+                "cuit": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/profile"
+                }
+            }
+        },
+        "user_and_pharmacist": {
+            "type": "object",
+            "properties": {
+                "pharmacist": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "__v": {
+                            "type": "integer"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "unique": {
+                            "type": "boolean"
+                        },
+                        "isParent": {
+                            "type": "boolean"
+                        },
+                        "scope": {
+                            "type": "string"
+                        },
+                        "enrollment": {
+                            "type": "string"
+                        },
+                        "cuit": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/user"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "pharmacist_error": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "exist_user",
+                    "exist_pharmacist",
+                    "User is Invalid",
+                    "Pharmacist is Invalid"
+                ]
+            }
+        },
+        "user_and_laboratory": {
+            "type": "object",
+            "properties": {
+                "laboratory": {
+                    "$ref": "#/definitions/entity"
+                },
+                "user": {
+                    "$ref": "#/definitions/user"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "laboratory_error": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "exist_user",
+                    "exist_laboratory",
+                    "User is Invalid",
+                    "Laborator is Invalid"
+                ]
+            }
+        },
+        "user_and_drugstore": {
+            "type": "object",
+            "properties": {
+                "drugstore": {
+                    "$ref": "#/definitions/entity"
+                },
+                "user": {
+                    "$ref": "#/definitions/user"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "drugstore_error": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "exist_user",
+                    "exist_drugstore",
+                    "User is Invalid",
+                    "Drugstore is Invalid"
+                ]
+            }
+        },
+        "change_password_error": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "invalid_old",
+                    "invalid_new"
+                ]
+            }
+        }
+    }
+}
