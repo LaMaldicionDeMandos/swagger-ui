@@ -1,0 +1,71 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.1",
+        "title": "pharmared api Contact",
+        "description": "Api para contactar al equipo",
+        "contact": {
+            "name": "Pharmared API team",
+            "email": "pasutmarcelo@gmail.com"
+        }
+    },
+    "host": "farmared.com.ar",
+    "basePath": "/api/contact",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/": {
+            "post": {
+                "description": "Recibe un formulario con un mensaje y envia un email a los administradores.",
+                "operationId": "contact",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "form",
+                        "description": "Formulario para enviar un mensaje",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/form"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "El mensaje fue recibido exitosamente"
+                    },
+                    "400": {
+                        "description": "Error algo pasó y no se envió el mensaje"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "form": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "message"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
